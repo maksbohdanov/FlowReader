@@ -26,4 +26,8 @@
     <ProjectReference Include="..\FlowReader.Core\FlowReader.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Configurations\" />
+  </ItemGroup>
+
 </Project>
