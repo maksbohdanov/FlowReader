@@ -1,6 +1,8 @@
-﻿using FlowReader.Core.Identity;
+﻿using FlowReader.Core.Entities;
+using FlowReader.Core.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using System.Reflection;
 
 namespace FlowReader.DataAccess.Persistence
@@ -11,15 +13,22 @@ namespace FlowReader.DataAccess.Persistence
         {
         }
 
-        //public DbSet<TodoItem> TodoItems { get; set; }
-
-        //public DbSet<TodoList> TodoLists { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<News> News { get; set; }
+        public DbSet<Feed> Feeds { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
             base.OnModelCreating(builder);
+        }
+
+        protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+        {
+            configurationBuilder.Conventions.Remove(typeof(TableNameFromDbSetConvention));
+
+            base.ConfigureConventions(configurationBuilder);
         }
     }
 }
