@@ -10,6 +10,6 @@ namespace FlowReader.Core.Entities
         public DateTime PublishingDate { get; set; }
 
         public virtual Feed? Feed { get; set; }
-        public int FeedId { get; set; }
+        public Guid FeedId { get; set; }
     }
 }

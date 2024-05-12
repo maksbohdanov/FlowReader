@@ -18,6 +18,11 @@ namespace FlowReader.DataAccess.Configurations
 
             builder.Property(x => x.Link)
                 .IsRequired();
+
+            builder.HasOne(x => x.User)
+                .WithMany(x => x.Feeds)
+                .HasForeignKey(x => x.UserId)
+                .IsRequired(false);
         }
     }
 }
