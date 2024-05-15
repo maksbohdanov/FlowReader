@@ -1,5 +1,6 @@
 ﻿using FlowReader.Core.Identity;
 using FlowReader.DataAccess.Persistence;
+using FlowReader.DataAccess.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -23,8 +24,9 @@ namespace FlowReader.DataAccess
 
         private static void AddRepositories(this IServiceCollection services)
         {
-            //services.AddScoped<ITodoItemRepository, TodoItemRepository>();
-            //services.AddScoped<ITodoListRepository, TodoListRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IFeedRepository, FeedRepository>();
+            services.AddScoped<INewsRepository, NewsRepository>();
         }
 
         private static void AddDatabase(this IServiceCollection services, IConfiguration configuration)
@@ -34,7 +36,7 @@ namespace FlowReader.DataAccess
             if (databaseConfig.UseInMemoryDatabase)
                 services.AddDbContext<DatabaseContext>(options =>
                 {
-                    options.UseInMemoryDatabase("NTierDatabase");
+                    options.UseInMemoryDatabase("FlowReaderInMemory");
                     options.ConfigureWarnings(x => x.Ignore(InMemoryEventId.TransactionIgnoredWarning));
                 });
             else
@@ -45,17 +47,12 @@ namespace FlowReader.DataAccess
 
         private static void AddIdentity(this IServiceCollection services)
         {
-            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddDefaultIdentity<ApplicationUser>()
                 .AddEntityFrameworkStores<DatabaseContext>();
 
             services.Configure<IdentityOptions>(options =>
             {
-                options.Password.RequireDigit = true;
-                options.Password.RequireLowercase = true;
                 options.Password.RequireNonAlphanumeric = true;
-                options.Password.RequireUppercase = true;
-                options.Password.RequiredLength = 6;
-                options.Password.RequiredUniqueChars = 1;
 
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
                 options.Lockout.MaxFailedAccessAttempts = 5;

@@ -6,4 +6,14 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="CodeHollow.FeedReader" Version="1.2.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FlowReader.DataAccess\FlowReader.DataAccess.csproj" />
+    <ProjectReference Include="..\FlowReader.Shared\FlowReader.Shared.csproj" />
+  </ItemGroup>
+
 </Project>
