@@ -20,9 +20,8 @@ namespace FlowReader.Application
         private static void AddServices(this IServiceCollection services)
         {
             services.AddScoped<IFeedService, FeedService>();
-            //services.AddScoped<ITodoListService, TodoListService>();
+            services.AddScoped<INewsService, NewsService>();
             //services.AddScoped<ITodoItemService, TodoItemService>();
-            //services.AddScoped<IUserService, UserService>();
             services.AddScoped<IClaimService, ClaimService>();
         }
 

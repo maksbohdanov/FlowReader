@@ -30,7 +30,7 @@ namespace FlowReader.Application.Services
         public async Task<IEnumerable<FeedResponseModel>> GetAllAsync()
         {
             var currentUserId = _claimService.GetUserId();
-            var result = await _feedRepository.GetAllAsync(x => x.UserId != null && x.UserId == currentUserId);
+            var result = await _feedRepository.GetAllAsync(x => x.UserId == currentUserId);
 
             return _mapper.Map<IEnumerable<FeedResponseModel>>(result);
         }

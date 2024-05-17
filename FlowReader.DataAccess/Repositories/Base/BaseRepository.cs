@@ -17,7 +17,7 @@ namespace FlowReader.DataAccess.Repositories
             _dbSet = context.Set<TEntity>();
         }
 
-        public async Task<TEntity> GetFirstAsync(Expression<Func<TEntity, bool>> predicate)
+        public virtual async Task<TEntity> GetFirstAsync(Expression<Func<TEntity, bool>> predicate)
         {
             var entity = await _dbSet.Where(predicate).FirstOrDefaultAsync();
 
@@ -26,7 +26,7 @@ namespace FlowReader.DataAccess.Repositories
             return entity;
         }
 
-        public async Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> predicate)
+        public virtual async Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> predicate)
         {
             return await _dbSet.Where(predicate).ToListAsync();
         }

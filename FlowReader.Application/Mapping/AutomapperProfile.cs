@@ -9,6 +9,8 @@ namespace FlowReader.Application.Mapping
         public AutomapperProfile()
         {
             CreateMap<Feed, FeedResponseModel>();
+
+            CreateMap<News, NewsResponseModel>();
         }
     }
 }
