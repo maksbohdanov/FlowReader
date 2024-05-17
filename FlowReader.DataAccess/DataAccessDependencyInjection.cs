@@ -52,7 +52,7 @@ namespace FlowReader.DataAccess
 
             services.Configure<IdentityOptions>(options =>
             {
-                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequireNonAlphanumeric = false;
 
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
                 options.Lockout.MaxFailedAccessAttempts = 5;

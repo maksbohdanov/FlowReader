@@ -11,7 +11,7 @@ namespace FlowReader.DataAccess.Persistence
             {
                 var user = new ApplicationUser { UserName = "admin", Email = "admin@admin.com", EmailConfirmed = true };
 
-                await userManager.CreateAsync(user, "Admin123.?");
+                await userManager.CreateAsync(user, "Admin123");
             }
 
             await context.SaveChangesAsync();
