@@ -26,15 +26,17 @@ namespace FlowReader.DataAccess.Repositories
             return entity;
         }
 
-        public virtual async Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> predicate)
+        public virtual async Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>>? predicate)
         {
-            return await _dbSet.Where(predicate).ToListAsync();
+            return predicate == null
+            ? await _dbSet.ToListAsync()
+            : await _dbSet.Where(predicate).ToListAsync();
         }
 
         public async Task<TEntity> AddAsync(TEntity entity)
         {
             var addedEntity = (await _dbSet.AddAsync(entity)).Entity;
-            await _context.SaveChangesAsync();
+            await SaveChangesAsync();
 
             return addedEntity;
         }
@@ -42,7 +44,7 @@ namespace FlowReader.DataAccess.Repositories
         public async Task<TEntity> UpdateAsync(TEntity entity)
         {
             _dbSet.Update(entity);
-            await _context.SaveChangesAsync();
+            await SaveChangesAsync();
 
             return entity;
         }
@@ -50,9 +52,14 @@ namespace FlowReader.DataAccess.Repositories
         public async Task<TEntity> DeleteAsync(TEntity entity)
         {
             var removedEntity = _dbSet.Remove(entity).Entity;
-            await _context.SaveChangesAsync();
+            await SaveChangesAsync();
 
             return removedEntity;
+        }
+
+        public async Task SaveChangesAsync()
+        {
+            await _context.SaveChangesAsync();
         }
     }
 }

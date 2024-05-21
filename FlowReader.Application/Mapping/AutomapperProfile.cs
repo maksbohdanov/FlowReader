@@ -11,6 +11,13 @@ namespace FlowReader.Application.Mapping
             CreateMap<Feed, FeedResponseModel>();
 
             CreateMap<News, NewsResponseModel>();
+
+            CreateMap<Category, CategoryResponseModel>();
+
+            CreateMap<Category, UserCategoryResponseModel>()
+                .AfterMap<SetUserSubscribedAction>();
+
+            CreateMap<CategoryResponseModel, SaveCategoryModel>();
         }
     }
 }

@@ -1,0 +1,44 @@
+﻿@using Microsoft.AspNetCore.Html
+@using NonFactors.Mvc.Grid;
+
+@model IEnumerable<FlowReader.Application.Models.UserCategoryResponseModel>
+@{
+    ViewData["Title"] = "Favourite";
+}
+
+@(Html
+    .Grid(Model)
+    .Build(columns =>
+    {
+        columns.Add(model => Html.CheckBox("Category_" + model.Id, model.IsSubscribed, new {@class = "favorite-checkbox"}));
+        columns.Add(model => model.Name).Titled("Name");
+    })
+    .Empty("No data found")
+    .Filterable()
+    .Sortable()
+    .Pageable()
+)
+@section Scripts{
+
+    <script>
+        $(document).ready(function () {
+            $('.favorite-checkbox').change(function () {
+                var checkboxId = $(this).attr('id');
+                var categoryId = checkboxId.split('_')[1];
+                var isSubscribed = $(this).is(':checked');
+                $.ajax({
+                    url: '/Category/ToggleFavoriteCategory',
+                    type: 'POST',
+                    data: JSON.stringify({ categoryId: categoryId, isSubscribed: isSubscribed }),
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (response) {
+                        console.log('Success:', response);
+                    },
+                    error: function (xhr, status, error) {
+                        console.log('Error:', error);
+                    }
+                });
+            });
+        });
+    </script>
+}

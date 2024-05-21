@@ -1,0 +1,28 @@
+﻿@using Microsoft.AspNetCore.Html
+@using NonFactors.Mvc.Grid;
+
+@model IEnumerable<FlowReader.Application.Models.CategoryResponseModel>
+@{
+    ViewData["Title"] = "Categories";
+}
+
+<p>
+    <a asp-action="Create">Add New</a>
+</p>
+@(
+Html
+    .Grid(Model)
+    .Build(columns =>
+    {
+        columns.Add(model => model.Code).Titled("Code");
+        columns.Add(model => model.Name).Titled("Name");
+
+        columns.Add(model => model.Id).Titled("").Encoded(false).RenderedAs(model => new HtmlString(
+            $"<a href=\"/Category/Edit/{model.Id}\">Edit</a> " +
+            $"<a href=\"/Category/Delete/{model.Id}\">Delete</a>"));   
+    })
+    .Empty("No data found")
+    .Filterable()
+    .Sortable()
+    .Pageable()
+)

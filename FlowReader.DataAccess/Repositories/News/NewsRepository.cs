@@ -11,12 +11,14 @@ namespace FlowReader.DataAccess.Repositories
         {            
         }
 
-        public override async Task<List<News>> GetAllAsync(Expression<Func<News, bool>> predicate)
+        public override async Task<List<News>> GetAllAsync(Expression<Func<News, bool>>? predicate)
         {
-            return await _context.News.Include(x => x.Feed)
-                .Where(predicate)
-                .OrderByDescending(x => x.PublishingDate)
-                .ToListAsync();
+            return predicate == null
+                ? await base.GetAllAsync(predicate)
+                : await _context.News.Include(x => x.Feed).ThenInclude(f => f.Categories)
+                    .Where(predicate)
+                    .OrderByDescending(x => x.PublishingDate)
+                    .ToListAsync();
         }
     }
 }

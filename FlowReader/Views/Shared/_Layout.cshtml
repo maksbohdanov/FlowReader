@@ -24,14 +24,19 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="News" asp-action="Index">News</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="News" asp-action="Recommended">For You</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="News" asp-action="Recommended">ForYou</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Feed" asp-action="Index">Feeds</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Category" asp-action="Favourite"></a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Category" asp-action="UserCategories">Favourite</a>
                         </li>
+                        @*TODO feed for admin *@
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Category" asp-action="Index">Categories</a>
+                        </li>
+                        @*TODO users *@
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>

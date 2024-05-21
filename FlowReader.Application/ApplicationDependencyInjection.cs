@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using FlowReader.Application.Mapping;
+﻿using FlowReader.Application.Mapping;
 using FlowReader.Application.Services;
 using FlowReader.Shared.Services;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,16 +20,13 @@ namespace FlowReader.Application
         {
             services.AddScoped<IFeedService, FeedService>();
             services.AddScoped<INewsService, NewsService>();
-            //services.AddScoped<ITodoItemService, TodoItemService>();
+            services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IClaimService, ClaimService>();
         }
 
         private static void RegisterAutoMapper(this IServiceCollection services)
         {
-            var mapperConfig = new MapperConfiguration(mc =>
-                mc.AddProfile(new AutomapperProfile()));
-            IMapper mapper = mapperConfig.CreateMapper();
-            services.AddSingleton(mapper);
+            services.AddAutoMapper(typeof(AutomapperProfile));
         }
     }
 }
