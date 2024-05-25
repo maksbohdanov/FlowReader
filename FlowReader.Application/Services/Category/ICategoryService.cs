@@ -12,6 +12,7 @@ namespace FlowReader.Application.Services
         Task<CategoryResponseModel> UpdateAsync(Guid id, SaveCategoryModel categoryModel);
         Task<BaseResponseModel> DeleteAsync(Guid id);
         Task ToggleFavoriteCategoryAsync(ToggleFavoriteCategoryModel categoryModel, ClaimsPrincipal principal);
+        Task<IEnumerable<FeedCategoryResponseModel>> GetCategoriesByFeed(Guid feedId);
     }
 }
 

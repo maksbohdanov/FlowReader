@@ -98,5 +98,12 @@ namespace FlowReader.Application.Services
 
             await _categoryRepository.SaveChangesAsync();         
         }
+
+        public async Task<IEnumerable<FeedCategoryResponseModel>> GetCategoriesByFeed(Guid feedId)
+        {
+            var result = await _categoryRepository.GetAllIncludedAsync();
+
+            return _mapper.Map<IEnumerable<FeedCategoryResponseModel>>(result, opt => opt.Items["FeedId"] = feedId);
+        }
     }
 }

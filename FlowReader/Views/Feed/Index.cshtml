@@ -4,6 +4,16 @@
 @model IEnumerable<FlowReader.Application.Models.FeedResponseModel>
 @{
     ViewData["Title"] = "Feeds";
+    Func<FlowReader.Application.Models.FeedResponseModel, string> GetButtonsString = (model) =>
+    {
+        var result = $"<a href=\"/Feed/Edit/{model.Id}\">Edit</a> " +
+            $"<a href=\"/Feed/Delete/{model.Id}\">Delete</a>";
+        if (User.IsInRole("Admin"))
+        {
+            result = result.Insert(0, $"<a href=\"/Feed/Categories/{model.Id}\">Categories</a> ");
+        }
+        return result;
+    };
 }
 
 <p>
@@ -17,11 +27,11 @@ Html
         columns.Add(model => model.UserTitle).Titled("Title");
         columns.Add(model => model.Description).Titled("Description");
         columns.Add(model => model.Link).Titled("Link");
-        columns.Add(model => model.PublishingDate).Titled("PublishingDate").Formatted("{0:d}");
+        columns.Add(model => model.PublishingDate).Titled("PublishingDate").Formatted("{0:d}");        
 
-        columns.Add(model => model.Id).Titled("").Encoded(false).RenderedAs(model => new HtmlString(
-            $"<a href=\"/Feed/Edit/{model.Id}\">Edit</a> " +
-            $"<a href=\"/Feed/Delete/{model.Id}\">Delete</a>"));   
+        columns.Add(model => model.Id).Titled("").Encoded(false).RenderedAs(model =>
+            new HtmlString(GetButtonsString(model)));
+
     })
     .Empty("No data found")
     .Filterable()

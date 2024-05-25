@@ -24,19 +24,11 @@ namespace FlowReader.DataAccess.Repositories
             return entity;
         }
 
-        public override async Task<List<Category>> GetAllAsync(Expression<Func<Category, bool>>? predicate)
-        {
-            return predicate == null
-               ? await base.GetAllAsync(predicate)
-               : await _context.Categories.Include(x => x.Users)
-                   .Where(predicate)
-                   .ToListAsync();
-        }
-
         public async Task<List<Category>> GetAllIncludedAsync()
         {
             return await _context.Categories
                 .Include(x => x.Users)
+                .Include(x => x.Feeds)
                 .ToListAsync();
         }
     }

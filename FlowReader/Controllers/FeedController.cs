@@ -19,6 +19,11 @@ namespace FlowReader.Controllers
 
         public async Task<ActionResult> Index()
         {
+            if (User.IsInRole("Admin"))
+            {
+                return RedirectToAction(nameof(Public));
+            }
+
             var feeds = await _feedService.GetAllAsync();
             return View(feeds);
         }
@@ -90,23 +95,29 @@ namespace FlowReader.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        //todo admin categories
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult> Public()
+        {
+            var feeds = await _feedService.GetAllPublicAsync();
+
+            return View("Index", feeds);
+        }
+
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Categories(Guid id)
         {
             var categories = await _categoryService.GetCategoriesByFeed(id);
 
-            return View();
+            return View("~/Views/Feed/Categories.cshtml", categories);
         }
 
         [HttpPost, ActionName("Categories")]
-        [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> FeedCategories(Guid id)
+        public async Task<IActionResult> SaveFeedCategories([FromBody] FeedCategoriesModel model)
         {
-            var categories = await _categoryService.GetCategoriesByFeed(id);
+            await _feedService.SaveFeedCategoriesAsync(model);
 
-            return View();
+            return Ok(new { success = true });
         }
     }
 }

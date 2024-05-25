@@ -26,5 +26,5 @@
 </form>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="@(Context.User.IsInRole("Admin") ? "Public" : "Index")">Back to List</a>
 </div>

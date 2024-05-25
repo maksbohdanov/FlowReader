@@ -17,6 +17,16 @@ namespace FlowReader.Application.Mapping
             CreateMap<Category, UserCategoryResponseModel>()
                 .AfterMap<SetUserSubscribedAction>();
 
+            CreateMap<Category, FeedCategoryResponseModel>()
+                .ForMember(
+                    x => x.IsIncluded, 
+                    o => o.MapFrom((src, dest, destMember, context) =>
+                    {
+                        var feedId = (Guid)context.Items["FeedId"];
+                        bool included = src.Feeds.Any(f => f.Id == feedId);
+                        return included;
+                    }));
+
             CreateMap<CategoryResponseModel, SaveCategoryModel>();
         }
     }

@@ -10,12 +10,15 @@ namespace FlowReader.Application.Services
     public class FeedService : IFeedService
     {
         private readonly IFeedRepository _feedRepository;
+        private readonly ICategoryRepository _categoryRepository;
         private readonly IClaimService _claimService;
         private readonly IMapper _mapper;
 
-        public FeedService(IFeedRepository feedRepository, IClaimService claimService, IMapper mapper)
+        public FeedService(IFeedRepository feedRepository, ICategoryRepository categoryRepository, 
+            IClaimService claimService, IMapper mapper)
         {
             _feedRepository = feedRepository;
+            _categoryRepository = categoryRepository;
             _claimService = claimService;
             _mapper = mapper;
         }
@@ -34,6 +37,12 @@ namespace FlowReader.Application.Services
 
             return _mapper.Map<IEnumerable<FeedResponseModel>>(result);
         }
+        public async Task<IEnumerable<FeedResponseModel>> GetAllPublicAsync()
+        {
+            var result = await _feedRepository.GetAllAsync(x => x.UserId == null);
+
+            return _mapper.Map<IEnumerable<FeedResponseModel>>(result);
+        }
 
         public async Task<FeedResponseModel?> CreateAsync(CreateFeedModel feedModel)
         {
@@ -46,8 +55,8 @@ namespace FlowReader.Application.Services
             Feed feedDb = new()
             {
                 UserTitle = feedModel.Title,
-                Title = feed.Title,
-                Description = feed.Description,
+                Title = feed.Title ?? string.Empty,
+                Description = feed.Description ?? string.Empty,
                 Link = feedModel.Link,
                 PublishingDate = feed.LastUpdatedDate ?? DateTime.Now                
             };
@@ -91,6 +100,23 @@ namespace FlowReader.Application.Services
             {
                 throw new BadRequestException("Wrong URL. An error occurred while trying to read the feed from a given URL.");
             }
+        }
+
+        public async Task SaveFeedCategoriesAsync(FeedCategoriesModel feedCategoriesModel)
+        {
+            var feed = await _feedRepository.GetFirstAsync(f => f.Id == feedCategoriesModel.FeedId);
+
+            var categories = await _categoryRepository
+                .GetAllAsync(c => feedCategoriesModel.CategoryIds.Contains(c.Id));
+
+            feed.Categories.Clear();
+
+            foreach (var category in categories)
+            {
+                feed.Categories.Add(category);
+            }
+
+            await _feedRepository.SaveChangesAsync();
         }
     }
 }

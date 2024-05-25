@@ -1,0 +1,56 @@
+﻿@using Microsoft.AspNetCore.Html
+@using NonFactors.Mvc.Grid;
+
+@model IEnumerable<FlowReader.Application.Models.FeedCategoryResponseModel>
+@{
+    ViewData["Title"] = "Categories";
+}
+
+@(Html
+    .Grid(Model)
+    .Build(columns =>
+    {
+        columns.Add(model => Html.CheckBox("Category_" + model.Id, model.IsIncluded, new { @class = "category-checkbox" }));
+        columns.Add(model => model.Name).Titled("Name");
+    })
+    .Empty("No data found")
+    .Filterable()
+    .Sortable()
+    .Pageable()
+)
+
+<div>
+    <a asp-action="Public">Back to List</a>
+    <button class="btn btn-primary" onclick="saveCategories()">Save</button>
+</div>
+
+@section Scripts{
+    <script>
+        function saveCategories() {
+            var selectedCategories = [];
+            document.querySelectorAll('.category-checkbox').forEach(function(checkbox) {
+                if (checkbox.checked) {
+                    var checkboxId = checkbox.getAttribute('id');
+                    var categoryId = checkboxId.split('_')[1];
+                    selectedCategories.push(categoryId);
+                }
+            });
+
+            var feedId = window.location.href.split('/').reverse()[0]
+
+            $.ajax({
+                url: '/Feed/Categories',
+                type: 'POST',
+                data: JSON.stringify({ feedId: feedId, categoryIds: selectedCategories }),
+                contentType: 'application/json; charset=utf-8',
+                success: function(response) {
+                    console.log('Success:', response);
+                    window.location.href = '@Url.Action("Public", "Feed")';
+                },
+                error: function(xhr, status, error) {
+                    console.log('Error:', error);
+                }
+            });
+        }
+    </script>    
+}
