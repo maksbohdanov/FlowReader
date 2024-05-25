@@ -9,13 +9,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{AB456473-86F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{658121E3-A600-4CEC-8E13-15FFC1FDD07B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlowReader.DataAccess", "FlowReader.DataAccess\FlowReader.DataAccess.csproj", "{3C231164-5128-4908-B246-B8BC94DD113B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlowReader.DataAccess", "FlowReader.DataAccess\FlowReader.DataAccess.csproj", "{3C231164-5128-4908-B246-B8BC94DD113B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlowReader.Application", "FlowReader.Application\FlowReader.Application.csproj", "{E9476A2A-E5D5-48EC-80F5-810E34C48818}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlowReader.Application", "FlowReader.Application\FlowReader.Application.csproj", "{E9476A2A-E5D5-48EC-80F5-810E34C48818}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlowReader.Core", "FlowReader.Core\FlowReader.Core.csproj", "{FBCAD07A-56E9-4E3C-A035-DCE677CFF313}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlowReader.Core", "FlowReader.Core\FlowReader.Core.csproj", "{FBCAD07A-56E9-4E3C-A035-DCE677CFF313}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlowReader.Shared", "FlowReader.Shared\FlowReader.Shared.csproj", "{67DF7E0F-A74B-4FE3-9F95-EDDEAF9EE3EB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlowReader.Shared", "FlowReader.Shared\FlowReader.Shared.csproj", "{67DF7E0F-A74B-4FE3-9F95-EDDEAF9EE3EB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

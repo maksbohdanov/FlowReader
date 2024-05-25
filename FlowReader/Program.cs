@@ -16,6 +16,11 @@ namespace FlowReader
 
             builder.Services.AddApplication();
 
+            //builder.Services.AddJwt(builder.Configuration);
+            builder.Services.AddAuthentication();
+            builder.Services.AddAuthorization();
+
+            builder.Services.AddRazorPages();
             builder.Services.AddControllersWithViews();
             
             builder.Services.AddTransient<ExceptionHandlingMiddleware>();
@@ -55,7 +60,6 @@ namespace FlowReader
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
             app.MapRazorPages();
-
 
             //app.UseMiddleware<ExceptionHandlingMiddleware>();
 

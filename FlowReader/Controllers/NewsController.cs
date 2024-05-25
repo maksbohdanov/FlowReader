@@ -1,8 +1,10 @@
 ﻿using FlowReader.Application.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FlowReader.Controllers
 {
+    [Authorize(Roles = "User")]
     public class NewsController : Controller
     {
         private readonly INewsService _newsService;

@@ -1,17 +1,20 @@
 ﻿using FlowReader.Application.Models;
 using FlowReader.Application.Services;
-using FlowReader.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FlowReader.Controllers
 {
+    [Authorize]
     public class FeedController : Controller
     {
         private readonly IFeedService _feedService;
+        private readonly ICategoryService _categoryService;
 
-        public FeedController(IFeedService feedService)
+        public FeedController(IFeedService feedService, ICategoryService categoryService)
         {
             _feedService = feedService;
+            _categoryService = categoryService;
         }
 
         public async Task<ActionResult> Index()
@@ -31,6 +34,7 @@ namespace FlowReader.Controllers
         {
             if (ModelState.IsValid)
             {
+                model.IsPublic = User.IsInRole("Admin");
                 await _feedService.CreateAsync(model);
                 return RedirectToAction(nameof(Index));
             }
@@ -84,6 +88,25 @@ namespace FlowReader.Controllers
             var result = await _feedService.DeleteAsync(id);
 
             return RedirectToAction(nameof(Index));
+        }
+
+        //todo admin categories
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Categories(Guid id)
+        {
+            var categories = await _categoryService.GetCategoriesByFeed(id);
+
+            return View();
+        }
+
+        [HttpPost, ActionName("Categories")]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> FeedCategories(Guid id)
+        {
+            var categories = await _categoryService.GetCategoriesByFeed(id);
+
+            return View();
         }
     }
 }

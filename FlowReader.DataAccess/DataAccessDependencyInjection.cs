@@ -48,7 +48,9 @@ namespace FlowReader.DataAccess
         private static void AddIdentity(this IServiceCollection services)
         {
             services.AddDefaultIdentity<ApplicationUser>()
-                .AddEntityFrameworkStores<DatabaseContext>();
+                .AddRoles<ApplicationRole>()
+                .AddEntityFrameworkStores<DatabaseContext>()
+                .AddDefaultTokenProviders();
 
             services.Configure<IdentityOptions>(options =>
             {

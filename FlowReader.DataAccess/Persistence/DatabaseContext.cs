@@ -7,7 +7,7 @@ using System.Reflection;
 
 namespace FlowReader.DataAccess.Persistence
 {
-    public class DatabaseContext : IdentityDbContext<ApplicationUser> // TODO roles
+    public class DatabaseContext : IdentityDbContext<ApplicationUser, ApplicationRole, string>
     {
         public DatabaseContext(DbContextOptions options) : base(options)
         {

@@ -5,13 +5,31 @@ namespace FlowReader.DataAccess.Persistence
 {
     public static class DataSeeder
     {
-        public static async Task SeedDatabaseAsync(DatabaseContext context, UserManager<ApplicationUser> userManager)
+        public static async Task SeedDatabaseAsync(DatabaseContext context, UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
         {
-            if (!userManager.Users.Any())
+            if(!roleManager.Roles.Any())
             {
-                var user = new ApplicationUser { UserName = "admin", Email = "admin@admin.com", EmailConfirmed = true };
+                foreach (var role in new[] { "User", "Admin" })
+                {
+                    await roleManager.CreateAsync(new ApplicationRole() { Name = role });
+                }
+            }
 
-                await userManager.CreateAsync(user, "Admin123");
+            var adminUsers = await userManager.GetUsersInRoleAsync("Admin");
+            if (!adminUsers.Any())
+            {
+                var adminUser = new ApplicationUser()
+                {                   
+                    Email = "admin@admin.com",
+                    UserName = "admin",
+                    EmailConfirmed = true
+                };
+
+                var result = await userManager.CreateAsync(adminUser, "Admin123");
+                if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(adminUser, "Admin");
+                }
             }
 
             await context.SaveChangesAsync();

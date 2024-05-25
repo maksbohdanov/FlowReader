@@ -14,8 +14,9 @@ namespace FlowReader.DataAccess.Persistence
             if (context.Database.IsSqlServer()) await context.Database.MigrateAsync();
 
             var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+            var roleManager = services.GetRequiredService<RoleManager<ApplicationRole>>();
 
-            await DataSeeder.SeedDatabaseAsync(context, userManager);
+            await DataSeeder.SeedDatabaseAsync(context, userManager, roleManager);
         }
     }
 }
