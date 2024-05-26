@@ -1,6 +1,6 @@
 using FlowReader.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
+using Newtonsoft.Json;
 
 namespace FlowReader.Controllers
 {
@@ -11,15 +11,18 @@ namespace FlowReader.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            var errorDetailsJson = TempData["ErrorDetails"] as string;
+            if (string.IsNullOrEmpty(errorDetailsJson))
+            {
+                return View();
+            }
+
+            var errorDetails = JsonConvert.DeserializeObject<ApiResult>(errorDetailsJson);
+
+            return View(errorDetails);
         }
     }
 }

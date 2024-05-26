@@ -16,7 +16,6 @@ namespace FlowReader
 
             builder.Services.AddApplication();
 
-            //builder.Services.AddJwt(builder.Configuration);
             builder.Services.AddAuthentication();
             builder.Services.AddAuthorization();
 
@@ -37,9 +36,9 @@ namespace FlowReader
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
+            app.UseExceptionHandler("/Home/Error");
 
             app.UseHttpsRedirection();
 
@@ -51,7 +50,7 @@ namespace FlowReader
 
             app.UseStaticFiles();
 
-            app.UseRouting();
+            app.UseRouting();            
 
             app.UseAuthentication();
             app.UseAuthorization();
@@ -61,7 +60,7 @@ namespace FlowReader
                 pattern: "{controller=Home}/{action=Index}/{id?}");
             app.MapRazorPages();
 
-            //app.UseMiddleware<ExceptionHandlingMiddleware>();
+            app.UseMiddleware<ExceptionHandlingMiddleware>();
 
             app.Run();
         }

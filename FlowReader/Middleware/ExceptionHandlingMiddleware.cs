@@ -1,6 +1,7 @@
 ﻿using FlowReader.Application.Exceptions;
-using FlowReader.Application.Models;
 using FlowReader.Core.Exceptions;
+using FlowReader.Models;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Newtonsoft.Json;
 
 namespace FlowReader.Middleware
@@ -8,10 +9,12 @@ namespace FlowReader.Middleware
     public class ExceptionHandlingMiddleware : IMiddleware
     {
         private readonly ILogger<ExceptionHandlingMiddleware> _logger;
+        private readonly ITempDataProvider _tempDataProvider;
 
-        public ExceptionHandlingMiddleware(ILogger<ExceptionHandlingMiddleware> logger)
+        public ExceptionHandlingMiddleware(ILogger<ExceptionHandlingMiddleware> logger, ITempDataProvider tempDataProvider)
         {
             _logger = logger;
+            _tempDataProvider = tempDataProvider;
         }
 
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
@@ -26,8 +29,8 @@ namespace FlowReader.Middleware
             }
         }
 
-        private Task HandleException(HttpContext context, Exception ex)
-        {
+        private async Task HandleException(HttpContext context, Exception ex)
+        {            
             _logger.LogError(ex.Message);
 
             var code = StatusCodes.Status500InternalServerError;
@@ -36,18 +39,17 @@ namespace FlowReader.Middleware
             code = ex switch
             {
                 NotFoundException => StatusCodes.Status404NotFound,
-                //ResourceNotFoundException => StatusCodes.Status404NotFound,
                 BadRequestException => StatusCodes.Status400BadRequest,
-                //UnprocessableRequestException => StatusCodes.Status422UnprocessableEntity,
                 _ => code
             };
+            
+            var result = ApiResult.Failure(errors, code);           
 
-            var result = JsonConvert.SerializeObject(ApiResult<string>.Failure(errors));
+            var tempData = _tempDataProvider.LoadTempData(context);
+            tempData["ErrorDetails"] = JsonConvert.SerializeObject(result);
+            _tempDataProvider.SaveTempData(context, tempData);
 
-            context.Response.ContentType = "application/json";
-            context.Response.StatusCode = code;
-
-            return context.Response.WriteAsync(result);
+            context.Response.Redirect("/Home/Error");
         }
     }
 }

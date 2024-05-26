@@ -65,29 +65,6 @@ namespace FlowReader.Controllers
             return View(model);
         }
 
-        //TODO
-        //public async Task<IActionResult> Delete(Guid id)
-        //{
-        //    //var feed = await _feedService.GetByIdAsync(id);
-        //    var model = new DeleteConfirmationModel { ControllerName = "Feed", ItemName = "feed", Id = id };
-
-        //    return PartialView("_DeleteConfirmation", model);
-        //}
-
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public async Task<ActionResult> DeleteConfirmed(Guid id)
-        //{
-        //    try
-        //    {
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
-
         public async Task<IActionResult> Delete(Guid id)
         {
             var result = await _feedService.DeleteAsync(id);

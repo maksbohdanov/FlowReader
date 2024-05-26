@@ -74,8 +74,6 @@ namespace FlowReader.Controllers
             return View(model);
         }
 
-        //TODO delete
-
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(Guid id)
         {

@@ -19,8 +19,8 @@ Html
         columns.Add(model => model.UserName).Titled("UserName");
 
         columns.Add(model => model.Id).Titled("").Encoded(false).RenderedAs(model => new HtmlString(
-            $"<a href=\"/User/Edit/{model.Id}\">Edit</a> " +
-            $"<a href=\"/User/Delete/{model.Id}\">Delete</a>"));   
+             $"<a href=\"/User/Edit/{model.Id}\" class=\"btn btn-sm mr-2\" data-toggle=\"tooltip\" title=\"Edit\"><i class=\"bi bi-pencil-square action-icon\"></i></a>" +
+             $"<a href=\"/User/Delete/{model.Id}\" class=\"btn btn-sm\" data-toggle=\"tooltip\" title=\"Delete\"><i class=\"bi bi-trash action-icon\"></i></a>"));
     })
     .Empty("No data found")
     .Pageable()    

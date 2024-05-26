@@ -55,3 +55,7 @@ body {
 .news-card-column {
     background-color: white !important;
 }
+
+.action-icon {
+    font-size: 18px;
+}

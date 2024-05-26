@@ -7,7 +7,7 @@
         {
         }
 
-        public NotFoundException(Type type) : base($"{type} is missing") { }
+        public NotFoundException(Type type) : base($"{type.Name} is missing") { }
 
 
         public NotFoundException(string? message) : base(message)
