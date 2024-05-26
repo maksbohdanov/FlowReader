@@ -6,18 +6,4 @@
     ViewData["Title"] = "News";
 }
 
-@(
-Html
-    .Grid(Model)
-    .Build(columns =>
-    {
-        columns.Add(model => model.Title).Titled("Title");
-        columns.Add(model => model.Description).Titled("Description");
-        columns.Add(model => model.Link).Titled("Link");
-        columns.Add(model => model.PublishingDate).Titled("PublishingDate").Formatted("{0:d}");
-    })
-    .Empty("No data found")
-    .Filterable()
-    .Sortable()
-    .Pageable()
-)
+<partial name="_NewsListPartial" model="Model" />

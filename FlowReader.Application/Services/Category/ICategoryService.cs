@@ -8,6 +8,7 @@ namespace FlowReader.Application.Services
         Task<CategoryResponseModel> GetByIdAsync(Guid id);
         Task<IEnumerable<CategoryResponseModel>> GetAllAsync();
         Task<IEnumerable<UserCategoryResponseModel>> GetUserCategoriesAsync();
+        Task<IEnumerable<CategoryResponseModel>> GetUserCategoriesFilterAsync();
         Task<CategoryResponseModel?> CreateAsync(SaveCategoryModel categoryModel);
         Task<CategoryResponseModel> UpdateAsync(Guid id, SaveCategoryModel categoryModel);
         Task<BaseResponseModel> DeleteAsync(Guid id);

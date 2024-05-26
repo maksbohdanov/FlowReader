@@ -42,11 +42,16 @@ namespace FlowReader.Application.Services
 
         }
 
-        public async Task<IEnumerable<NewsResponseModel>> GetFavoritesAsync()
+        public async Task<IEnumerable<NewsResponseModel>> GetFavoritesAsync(List<Guid>? categoryIds)
         {
             var categoriesQuery =  _userManager.Users
                 .Where(x => x.Id == _currentUserId)
                 .SelectMany(x => x.Categories);
+
+            if (categoryIds != null && categoryIds.Count != 0)
+            {
+                categoriesQuery = categoriesQuery.Where(x => categoryIds.Contains(x.Id));
+            }
 
             var feeds = await categoriesQuery
                 .SelectMany(x => x.Feeds)
@@ -66,7 +71,6 @@ namespace FlowReader.Application.Services
 
         public async Task ReadFeedsAsync(Expression<Func<Feed, bool>> predicate)
         {
-            //var feeds = await _feedRepository.GetAllAsync(x => x.UserId == _currentUserId);
             var feeds = await _feedRepository.GetAllAsync(predicate);
             foreach (var feedDb in feeds)
             {

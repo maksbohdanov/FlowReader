@@ -24,12 +24,22 @@ namespace FlowReader.DataAccess.Repositories
             return entity;
         }
 
-        public async Task<List<Category>> GetAllIncludedAsync()
-        {
-            return await _context.Categories
-                .Include(x => x.Users)
-                .Include(x => x.Feeds)
-                .ToListAsync();
+        public async Task<List<Category>> GetAllIncludedAsync(Expression<Func<Category, bool>>? predicate)
+        {            
+            if(predicate != null)
+            {
+                return await _context.Categories
+                   .Include(x => x.Users)
+                   .Where(predicate)
+                   .ToListAsync();
+            }
+            else
+            {
+                return await _context.Categories
+                    .Include(x => x.Users)
+                    .Include(x => x.Feeds)
+                    .ToListAsync();
+            }
         }
     }
 }

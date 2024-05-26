@@ -3,6 +3,7 @@ using FlowReader.Application.Models;
 using FlowReader.Core.Entities;
 using FlowReader.Core.Identity;
 using FlowReader.DataAccess.Repositories;
+using FlowReader.Shared.Services;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 
@@ -12,12 +13,15 @@ namespace FlowReader.Application.Services
     {
         private readonly ICategoryRepository _categoryRepository;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IClaimService _claimService;
         private readonly IMapper _mapper;
 
-        public CategoryService(ICategoryRepository categoryRepository, UserManager<ApplicationUser> userManager, IMapper mapper)
+        public CategoryService(ICategoryRepository categoryRepository, UserManager<ApplicationUser> userManager,
+            IClaimService claimService, IMapper mapper)
         {
             _categoryRepository = categoryRepository;
             _userManager = userManager;
+            _claimService = claimService;
             _mapper = mapper;
         }
 
@@ -38,6 +42,14 @@ namespace FlowReader.Application.Services
         public async Task<IEnumerable<UserCategoryResponseModel>> GetUserCategoriesAsync()
         {
             var result = await _categoryRepository.GetAllIncludedAsync();
+
+            return _mapper.Map<IEnumerable<UserCategoryResponseModel>>(result);
+        }
+
+        public async Task<IEnumerable<CategoryResponseModel>> GetUserCategoriesFilterAsync()
+        {
+            var currentUserId = _claimService.GetUserId();
+            var result = await _categoryRepository.GetAllIncludedAsync(x => x.Users.Any(u => u.Id == currentUserId));
 
             return _mapper.Map<IEnumerable<UserCategoryResponseModel>>(result);
         }

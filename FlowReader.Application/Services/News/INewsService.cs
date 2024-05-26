@@ -8,6 +8,6 @@ namespace FlowReader.Application.Services
     {
         Task ReadFeedsAsync(Expression<Func<Feed, bool>> predicate);
         Task<IEnumerable<NewsResponseModel>> GetAllAsync();
-        Task<IEnumerable<NewsResponseModel>> GetFavoritesAsync();
+        Task<IEnumerable<NewsResponseModel>> GetFavoritesAsync(List<Guid>? categoryIds = null);
     }
 }

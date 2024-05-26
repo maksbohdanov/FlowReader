@@ -1,0 +1,21 @@
+﻿@using Microsoft.AspNetCore.Html
+@using NonFactors.Mvc.Grid;
+
+@model IEnumerable<FlowReader.Application.Models.NewsResponseModel>
+
+
+@(
+Html
+    .Grid(Model)
+    .Build(columns =>
+    {
+        columns.Add(model => model.Title).Titled("Title");
+        columns.Add(model => model.Description).Titled("Description");
+        columns.Add(model => model.Link).Titled("Link");
+        columns.Add(model => model.PublishingDate).Titled("PublishingDate").Formatted("{0:d}");
+    })
+    .Empty("No data found")
+    .Filterable()
+    .Sortable()
+    .Pageable()
+)

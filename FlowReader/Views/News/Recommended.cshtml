@@ -1,0 +1,55 @@
+﻿@model FlowReader.Models.NewsViewModel
+
+@{
+    ViewData["Title"] = "News";
+}
+
+<div class="row">
+    <div class="col-md-3">
+        <h3>Categories</h3>
+        <form id="categoryFilterForm">
+            @foreach (var category in Model.Categories)
+            {
+                <div class="form-check">
+                    <input class="form-check-input category-checkbox" type="checkbox" value="@category.Id" id="category_@category.Id" name="categoryIds" />
+                    <label class="form-check-label" for="category_@category.Id">
+                        @category.Name
+                    </label>
+                </div>
+            }
+            <button type="button" class="btn btn-primary mt-3" onclick="applyFilter()">Apply</button>
+        </form>
+    </div>
+    <div class="col-md-9">
+        <h3>News</h3>
+        <div id="newsList">
+            <partial name="_NewsListPartial" model="Model.News" />
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function applyFilter() {
+            var selectedCategories = [];
+            document.querySelectorAll('.category-checkbox').forEach(function (checkbox) {
+                if (checkbox.checked) {
+                    selectedCategories.push(checkbox.value);
+                }
+            });
+            console.log(selectedCategories);
+            fetch('/News/FilterByCategories', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(selectedCategories)
+            }).then(response => response.text())
+                .then(data => {
+                    document.getElementById('newsList').innerHTML = data;
+                }).catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+    </script>
+}
