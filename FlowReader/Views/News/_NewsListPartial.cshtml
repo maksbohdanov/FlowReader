@@ -3,19 +3,33 @@
 
 @model IEnumerable<FlowReader.Application.Models.NewsResponseModel>
 
+@{
+    Func<FlowReader.Application.Models.NewsResponseModel, string> RenderCard = (model) =>
+        $"<div class=\"card mb-4 shadow-sm\">" +
+            $"<div class=\"card-body\">" +
+                $"<h5 class=\"card-title\">{model.Title}</h5>" +
+                $"<img class=\"card-img-top news-image\" src=\"{model.Image}\" alt=\"News image\">" +
+                $"<p class=\"card-text\">{model.Description}</p>" +
+                $"<a href=\"{model.Link}\" target=\"_blank\" class=\"btn btn-primary\">Read more</a>" +
+            $"</div>" +
+            $"<div class=\"card-footer text-muted\">" +
+                $"{model.PublishingDate:d}" +
+            $"</div>" +
+        $"</div>";
+}
 
-@(
-Html
-    .Grid(Model)
-    .Build(columns =>
-    {
-        columns.Add(model => model.Title).Titled("Title");
-        columns.Add(model => model.Description).Titled("Description");
-        columns.Add(model => model.Link).Titled("Link");
-        columns.Add(model => model.PublishingDate).Titled("PublishingDate").Formatted("{0:d}");
-    })
-    .Empty("No data found")
-    .Filterable()
-    .Sortable()
-    .Pageable()
-)
+<div class="news-grid">
+    @(
+        Html
+        .Grid(Model)
+        .Build(columns =>
+        {
+            columns.Add(model => new HtmlString(RenderCard(model)))
+                .Encoded(false)
+                .Titled("")            
+                .Css("news-card-column");
+        })
+        .Empty("No data found")
+        .Pageable()
+        )
+</div>

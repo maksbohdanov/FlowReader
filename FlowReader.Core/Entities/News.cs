@@ -7,6 +7,7 @@ namespace FlowReader.Core.Entities
         public string Title { get; set; } = string.Empty;
         public string Link { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
+        public string Image { get; set; } = string.Empty;
         public DateTime PublishingDate { get; set; }
         public string ItemId { get; set; } = string.Empty;
 

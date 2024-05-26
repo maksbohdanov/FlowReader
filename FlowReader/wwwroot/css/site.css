@@ -20,3 +20,38 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.news-grid .mvc-grid {
+    border: none;
+    box-shadow: none;
+}
+
+    .news-grid .mvc-grid table {
+        border: none;
+        box-shadow: none;
+    }
+
+    .news-grid .mvc-grid th, .news-grid .mvc-grid td {
+        border: none;
+        box-shadow: none;
+    }
+
+    .news-grid .mvc-grid .mvc-grid-table {
+        border-collapse: collapse;
+    }
+
+    .news-grid .mvc-grid .mvc-grid-header,
+    .news-grid .mvc-grid .mvc-grid-footer {
+        display: none;
+    }
+
+.news-image {
+    height: auto;
+    max-height: 70%; 
+    max-width: 70%;
+    object-fit: cover;
+}
+
+.news-card-column {
+    background-color: white !important;
+}

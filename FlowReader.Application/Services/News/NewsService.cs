@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CodeHollow.FeedReader.Feeds;
 using FlowReader.Application.Models;
 using FlowReader.Core.Entities;
 using FlowReader.Core.Identity;
@@ -91,6 +92,10 @@ namespace FlowReader.Application.Services
                         Link = item.Link,
                         PublishingDate = item.PublishingDate ?? DateTime.Now
                     };
+                    if (item.SpecificItem is Rss20FeedItem feedItem)
+                    {
+                        news.Image = feedItem?.Enclosure?.Url ?? string.Empty;
+                    }
 
                     await _newsRepository.AddAsync(news);
                 }
