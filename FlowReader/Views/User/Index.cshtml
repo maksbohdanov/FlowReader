@@ -1,0 +1,27 @@
+﻿@using Microsoft.AspNetCore.Html
+@using NonFactors.Mvc.Grid;
+
+@model IEnumerable<FlowReader.Models.UserViewModel>
+@{
+    ViewData["Title"] = "Users";
+}
+
+
+@(
+Html
+    .Grid(Model)
+    .Build(columns =>
+    {
+        columns.Add(model => new HtmlString("<img src='/images/profile-icon.jpg' alt='Profile Icon' width='50' height='50' />"))
+               .Titled("Profile").Encoded(false);
+
+        columns.Add(model => model.Email).Titled("Email");
+        columns.Add(model => model.UserName).Titled("UserName");
+
+        columns.Add(model => model.Id).Titled("").Encoded(false).RenderedAs(model => new HtmlString(
+            $"<a href=\"/User/Edit/{model.Id}\">Edit</a> " +
+            $"<a href=\"/User/Delete/{model.Id}\">Delete</a>"));   
+    })
+    .Empty("No data found")
+    .Pageable()    
+)
